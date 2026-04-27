@@ -1,19 +1,12 @@
-"use client";
-
-import { useState } from 'react';
-import LoginForm from '@/components/auth/LoginForm';
+import LoginForm from "@/components/auth/LoginForm";
 
 export default function LoginPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">
-            Bienvenido de nuevo
-          </h1>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Inicia sesión para continuar
-          </p>
+    <main className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 p-4">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 w-full max-w-md border border-gray-100 dark:border-gray-800">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Bienvenido de nuevo</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Ingresa tus credenciales para continuar</p>
         </div>
         <LoginForm />
       </div>
