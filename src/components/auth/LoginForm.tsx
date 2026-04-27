@@ -7,34 +7,37 @@ interface LoginFormProps {
   callbackUrl?: string;
 }
 
-export default function LoginForm({ callbackUrl = '/dashboard' }: LoginFormProps) {
+export default function LoginForm({ callbackUrl }: LoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setLoading(true);
 
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
-        body: JSON.stringify({ email, password }),
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        // Set auth_token in a cookie accessible by middleware
-        document.cookie = `auth_token=${data.token}; path=/; max-age=86400; SameSite=Lax`;
-        router.push(callbackUrl);
+      const data = await res.json();
+
+      if (res.ok && data.token) {
+        // Store token in localStorage for client-side access if needed
+        localStorage.setItem('session_token', data.token);
+        router.push(callbackUrl || '/dashboard');
         router.refresh();
       } else {
-        alert('Credenciales inválidas');
+        setError(data.error || 'Invalid email or password');
       }
     } catch (err) {
-      console.error(err);
+      setError('An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -42,6 +45,7 @@ export default function LoginForm({ callbackUrl = '/dashboard' }: LoginFormProps
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {error && <p className="text-sm text-red-500 bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">{error}</p>}
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
         <input 
@@ -53,7 +57,7 @@ export default function LoginForm({ callbackUrl = '/dashboard' }: LoginFormProps
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Contraseña</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Password</label>
         <input 
           type="password" 
           value={password} 
@@ -67,7 +71,7 @@ export default function LoginForm({ callbackUrl = '/dashboard' }: LoginFormProps
         disabled={loading}
         className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+        {loading ? 'Signing in...' : 'Sign In'}
       </button>
     </form>
   );
