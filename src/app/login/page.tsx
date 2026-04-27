@@ -1,50 +1,22 @@
 "use client";
 
 import { useState } from 'react';
+import LoginForm from '@/components/auth/LoginForm';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Login attempt:', { email, password });
-    alert(`Login attempted for: ${email}`);
-  };
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-2xl font-bold text-center">Login</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded border p-2"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded border p-2"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
-          >
-            Sign In
-          </button>
-        </form>
+    <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">
+            Bienvenido de nuevo
+          </h1>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Inicia sesión para continuar
+          </p>
+        </div>
+        <LoginForm />
       </div>
-    </div>
+    </main>
   );
 }
