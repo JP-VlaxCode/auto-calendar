@@ -14,11 +14,9 @@ export default function LoginForm() {
     setIsLoading(true);
     setError('');
     
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500));
     
     setIsLoading(false);
-    console.log('Login attempt:', { email, password });
   };
 
   return (
@@ -54,28 +52,18 @@ export default function LoginForm() {
             type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors pr-12"
+            className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
             required
             placeholder="••••••••"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            className="absolute right-3 top-3 text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
           >
-            {showPassword ? 'Ocultar' : 'Ver'}
+            {showPassword ? 'Ocultar' : 'Mostrar'}
           </button>
         </div>
-      </div>
-
-      <div className="flex items-center justify-between">
-        <label className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-          <input type="checkbox" className="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-          Recordarme
-        </label>
-        <a href="#" className="text-sm text-blue-600 hover:underline dark:text-blue-400">
-          ¿Olvidaste tu contraseña?
-        </a>
       </div>
 
       <button
