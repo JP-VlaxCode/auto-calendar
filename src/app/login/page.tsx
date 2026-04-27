@@ -1,6 +1,12 @@
 import LoginForm from '@/components/auth/LoginForm';
 
-export default function LoginPage() {
+interface LoginPageProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default function LoginPage({ searchParams }: LoginPageProps) {
+  const callbackUrl = typeof searchParams.callbackUrl === 'string' ? searchParams.callbackUrl : '/dashboard';
+
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 p-4">
       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 w-full max-w-md border border-gray-100 dark:border-gray-800">
@@ -8,7 +14,7 @@ export default function LoginPage() {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Bienvenido de nuevo</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Ingresa tus credenciales para acceder a tu cuenta.</p>
         </div>
-        <LoginForm />
+        <LoginForm callbackUrl={callbackUrl} />
       </div>
     </main>
   );
