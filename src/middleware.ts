@@ -1,18 +1,24 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('auth_token') || request.headers.get('authorization');
+  const token = request.cookies.get("auth_token")?.value;
+  const isAuthPage = request.nextUrl.pathname.startsWith("/login");
+  const isDashboard = request.nextUrl.pathname.startsWith("/dashboard");
 
-  if (!token && !request.nextUrl.pathname.startsWith('/login')) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname);
+  if (isDashboard && !token) {
+    const loginUrl = new URL("/login", request.url);
     return NextResponse.redirect(loginUrl);
+  }
+
+  if (isAuthPage && token) {
+    const dashboardUrl = new URL("/dashboard", request.url);
+    return NextResponse.redirect(dashboardUrl);
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|login).*)'],
+  matcher: ["/dashboard/:path*", "/login"],
 };
