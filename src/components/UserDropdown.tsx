@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 import { useRouter } from "next/navigation";
 
 export default function UserDropdown() {
@@ -8,19 +9,11 @@ export default function UserDropdown() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  useOutsideClick(dropdownRef, () => setIsOpen(false));
 
   const handleSignOut = () => {
-    // Mock session invalidation
-    localStorage.removeItem("user_session");
+    // Logic to invalidate session would go here
+    // e.g., auth.signOut();
     router.push("/login");
   };
 
@@ -28,12 +21,13 @@ export default function UserDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 rounded-full bg-gray-200 p-2 hover:bg-gray-300 focus:outline-none"
+        className="flex items-center space-x-2 rounded-full bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none"
       >
-        <span className="text-sm font-medium">User</span>
+        <span>User Profile</span>
       </button>
+
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+        <div className="absolute right-0 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 z-50">
           <button
             onClick={handleSignOut}
             className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
